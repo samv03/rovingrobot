@@ -14,7 +14,8 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
   try
   {
     //cv::imshow("view", cv_bridge::toCvShare(msg, "bgr8")->image);
-    Mat tempmat = cv_bridge::toCvShare(msg, "bgr8")->image;
+    //Mat tempmat = cv_bridge::toCvShare(msg, "bgr8")->image;
+    Mat tempmat = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8)->image;
     incoming_queue.push(tempmat);
     //imshow("view", incoming_queue.front());
     cv::waitKey(30);
@@ -102,9 +103,12 @@ int main(int argc, char **argv)
 
       incoming_queue.pop();
 
-      if(waitKey(30) >= 0)
-        break;
+      //cout << "Before Wait" << endl;
+      //if(waitKey(30) >= 0)
+      //  break;
+      
     }
+    
     ros::spinOnce();
   }
   cv::destroyWindow("view");
